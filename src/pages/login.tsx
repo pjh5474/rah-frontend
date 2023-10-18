@@ -106,10 +106,7 @@ export const Login = () => {
         </form>
         <div>
           New to RAH?{" "}
-          <Link
-            to="/create-account"
-            className=" text-lime-600 hover:underline "
-          >
+          <Link to="/create-account" className=" text-sky-400 hover:underline ">
             Create an Account
           </Link>
         </div>
