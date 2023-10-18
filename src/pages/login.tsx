@@ -5,8 +5,9 @@ import { LoginMutation, LoginMutationVariables } from "../__api__/types";
 import rahLogo from "../images/rahodes.svg";
 import { Button } from "../components/button";
 import { Link, useLocation } from "react-router-dom";
-import { Helmet, HelmetProvider } from "react-helmet-async";
-import { isLoggedInVar } from "../apollo";
+import { Helmet } from "react-helmet-async";
+import { authTokenVar, isLoggedInVar } from "../apollo";
+import { LOCALSTORAGE_TOKEN } from "../constants";
 
 const LOGIN_MUTATION = gql`
   mutation login($loginInput: LoginInput!) {
@@ -50,15 +51,18 @@ export const Login = () => {
 
   const onCompleted = (data: LoginMutation) => {
     const {
-      login: { error, ok, token },
+      login: { ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authTokenVar(token);
       isLoggedInVar(true);
     }
   };
 
-  const onError = (error: ApolloError) => {};
+  const onError = (error: ApolloError) => {
+    console.log(error);
+  };
 
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
@@ -82,11 +86,9 @@ export const Login = () => {
   };
   return (
     <div className="h-screen flex  items-center flex-col mt-10 lg:mt-28">
-      <HelmetProvider>
-        <Helmet>
-          <title>Log In | RAH</title>
-        </Helmet>
-      </HelmetProvider>
+      <Helmet>
+        <title>Log In | RAH</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <img src={rahLogo} alt="rahLogo" className="w-52 mb-10" />
         <h4 className="w-full font-medium text-left text-3xl mb-10">LOG IN</h4>

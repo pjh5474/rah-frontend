@@ -4,7 +4,7 @@ import { FormError } from "../components/form-error";
 import rahLogo from "../images/rahodes.svg";
 import { Button } from "../components/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import {
   CreateAccountMutation,
   CreateAccountMutationVariables,
@@ -87,11 +87,9 @@ export const CreateAccount = () => {
   };
   return (
     <div className="h-screen flex  items-center flex-col mt-10 lg:mt-28">
-      <HelmetProvider>
-        <Helmet>
-          <title>Sign In | RAH</title>
-        </Helmet>
-      </HelmetProvider>
+      <Helmet>
+        <title>Sign In | RAH</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <img src={rahLogo} alt="rahLogo" className="w-52 mb-10" />
         <h4 className="w-full font-medium text-left text-3xl mb-10">SIGN IN</h4>
@@ -133,7 +131,7 @@ export const CreateAccount = () => {
           )}
           <input
             {...register("passwordConfirm", {
-              required: "Password is required",
+              required: "PasswordConfirm is required",
               validate: (value) => {
                 if (value === getValues("password")) {
                   return true;
