@@ -51,12 +51,7 @@ export const CreateAccount = () => {
     } = data;
     if (ok) {
       alert("Account Created! Log in now!");
-      navigate("/", {
-        state: {
-          email: getValues("email"),
-          password: getValues("password"),
-        },
-      });
+      navigate("/");
     }
   };
 
@@ -185,7 +180,7 @@ export const CreateAccount = () => {
         </form>
         <div>
           Already have an account?{" "}
-          <Link to="/" className=" text-sky-400 hover:underline ">
+          <Link to="/" className=" link ">
             Log In Now
           </Link>
         </div>

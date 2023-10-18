@@ -4,7 +4,7 @@ import { FormError } from "../components/form-error";
 import { LoginMutation, LoginMutationVariables } from "../__api__/types";
 import rahLogo from "../images/rahodes.svg";
 import { Button } from "../components/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { authTokenVar, isLoggedInVar } from "../apollo";
 import { LOCALSTORAGE_TOKEN } from "../constants";
@@ -24,17 +24,9 @@ interface ILoginForm {
   password: string;
 }
 
-interface LocationState {
-  email: string;
-  password: string;
-}
-
 export const Login = () => {
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  const location = useLocation();
-  const state = location?.state as LocationState;
 
   const {
     register,
@@ -43,10 +35,6 @@ export const Login = () => {
     handleSubmit,
   } = useForm<ILoginForm>({
     mode: "onChange",
-    defaultValues: {
-      email: state?.email,
-      password: state?.password,
-    },
   });
 
   const onCompleted = (data: LoginMutation) => {
@@ -55,8 +43,10 @@ export const Login = () => {
     } = data;
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
-      authTokenVar(token);
+      console.log("token: ", token);
       isLoggedInVar(true);
+      authTokenVar(token);
+      console.log("authTokenVar: ", authTokenVar());
     }
   };
 
@@ -135,7 +125,7 @@ export const Login = () => {
         </form>
         <div>
           New to RAH?{" "}
-          <Link to="/create-account" className=" text-sky-400 hover:underline ">
+          <Link to="/create-account" className="link ">
             Create an Account
           </Link>
         </div>

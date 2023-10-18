@@ -5,4 +5,8 @@
   @apply focus:outline-none focus:border-amber-600 p-3 border-2 text-lg font-light border-amber-300 transition-colors;
 }
 
+.link {
+  @apply text-sky-400 hover:underline;
+}
+
 @tailwind utilities;
