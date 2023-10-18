@@ -1,7 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
-import rahLogo from "../images/rahodes.svg";
 import { Button } from "../components/button";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -10,6 +9,8 @@ import {
   CreateAccountMutationVariables,
   UserRole,
 } from "../__api__/types";
+import { Logo } from "../components/logo";
+import { EMAIL_REGEX } from "../constants";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
@@ -29,9 +30,6 @@ interface ICreateAccountForm {
 }
 
 export const CreateAccount = () => {
-  const emailRegex =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   const {
     register,
     getValues,
@@ -86,7 +84,7 @@ export const CreateAccount = () => {
         <title>Sign In | RAH</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
-        <img src={rahLogo} alt="rahLogo" className="w-52 mb-10" />
+        <Logo />
         <h4 className="w-full font-medium text-left text-3xl mb-10">SIGN IN</h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -96,7 +94,7 @@ export const CreateAccount = () => {
             {...register("email", {
               required: "Email is required",
               pattern: {
-                value: emailRegex,
+                value: EMAIL_REGEX,
                 message: "Please enter a valid email",
               },
             })}
