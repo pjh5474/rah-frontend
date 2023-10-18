@@ -3,9 +3,13 @@ import { Header } from "../components/header";
 import { useMe } from "../hooks/useMe";
 import { NotFound } from "../pages/404";
 import { Stores } from "../pages/client/stores";
+import { ConfirmEmail } from "../pages/user/confirm-email";
 import { UserRole } from "../__api__/types";
 
-const ClientRouter = [<Route path="/" element={<Stores />} key="client" />];
+const ClientRouter = [
+  <Route path="/" element={<Stores />} key="client" />,
+  <Route path="/confirm" element={<ConfirmEmail />} key="confirmEmail" />,
+];
 
 export const LoggedInRouter = () => {
   const { data, loading, error } = useMe();
