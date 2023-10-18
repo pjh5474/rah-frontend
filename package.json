@@ -25,8 +25,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run generate & react-scripts start",
     "build": "react-scripts build",
+    "generate": "graphql-codegen",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,5 +48,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1"
   }
 }
