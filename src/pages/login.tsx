@@ -74,6 +74,10 @@ export const Login = () => {
           <input
             {...register("email", {
               required: "Email is required",
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                message: "Please enter a valid email",
+              },
             })}
             name="email"
             required
