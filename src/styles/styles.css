@@ -13,4 +13,8 @@
   @apply text-sky-400 hover:underline;
 }
 
+.container {
+  @apply max-w-screen-2xl mx-auto px-4;
+}
+
 @tailwind utilities;

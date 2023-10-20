@@ -15,7 +15,7 @@ export const Header = () => {
         </div>
       )}
       <header className=" py-4">
-        <div className="w-full px-5 md:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
+        <div className="container w-full px-5 md:px-0 flex justify-between items-center">
           <Logo width="w-36" margin="md:ml-5" />
           <div className=" text-lg flex items-center justify-around">
             <Link to="/edit-profile">
