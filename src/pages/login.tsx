@@ -4,10 +4,10 @@ import { FormError } from "../components/form-error";
 import { LoginMutation, LoginMutationVariables } from "../__api__/types";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { authTokenVar, isLoggedInVar } from "../apollo";
 import { EMAIL_REGEX, LOCALSTORAGE_TOKEN } from "../constants";
 import { Logo } from "../components/logo";
+import { SetHelmet } from "../components/helmet";
 
 const LOGIN_MUTATION = gql`
   mutation login($loginInput: LoginInput!) {
@@ -40,10 +40,8 @@ export const Login = () => {
     } = data;
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
-      console.log("token: ", token);
       isLoggedInVar(true);
       authTokenVar(token);
-      console.log("authTokenVar: ", authTokenVar());
     }
   };
 
@@ -73,9 +71,7 @@ export const Login = () => {
   };
   return (
     <div className="h-screen flex  items-center flex-col mt-10 lg:mt-28">
-      <Helmet>
-        <title>Log In | RAH</title>
-      </Helmet>
+      <SetHelmet helmetTitle="Log In" />
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <Logo />
         <h4 className="w-full font-medium text-left text-3xl mb-10">LOG IN</h4>
@@ -92,6 +88,7 @@ export const Login = () => {
               },
             })}
             name="email"
+            type="email"
             required
             placeholder="Email"
             className="input"
@@ -108,6 +105,7 @@ export const Login = () => {
               },
             })}
             name="password"
+            type="password"
             required
             placeholder="Password"
             className="input"

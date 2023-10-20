@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
 import { Button } from "../components/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import {
   CreateAccountMutation,
   CreateAccountMutationVariables,
@@ -11,6 +10,7 @@ import {
 } from "../__api__/types";
 import { Logo } from "../components/logo";
 import { EMAIL_REGEX } from "../constants";
+import { SetHelmet } from "../components/helmet";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
@@ -80,9 +80,7 @@ export const CreateAccount = () => {
   };
   return (
     <div className="h-screen flex  items-center flex-col mt-10 lg:mt-28">
-      <Helmet>
-        <title>Sign In | RAH</title>
-      </Helmet>
+      <SetHelmet helmetTitle="Sign In" />
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <Logo />
         <h4 className="w-full font-medium text-left text-3xl mb-10">SIGN IN</h4>
@@ -99,6 +97,7 @@ export const CreateAccount = () => {
               },
             })}
             name="email"
+            type="email"
             required
             placeholder="Email"
             className="input"
@@ -115,6 +114,7 @@ export const CreateAccount = () => {
               },
             })}
             name="password"
+            type="password"
             required
             placeholder="Password"
             className="input"
@@ -134,6 +134,7 @@ export const CreateAccount = () => {
               },
             })}
             name="passwordConfirm"
+            type="password"
             required
             placeholder="PasswordConfirm"
             className="input"
