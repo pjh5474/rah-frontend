@@ -562,6 +562,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, email: string, username: string, role: UserRole, verified: boolean } };
 
+export type StoresPageQueryVariables = Exact<{
+  input: StoresInput;
+}>;
+
+
+export type StoresPageQuery = { __typename?: 'Query', allCategories: { __typename?: 'AllCategoriesOutput', ok: boolean, error?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number }> | null }, stores: { __typename?: 'StoresOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, results?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
+
 export type CreateAccountMutationVariables = Exact<{
   createAccountInput: CreateAccountInput;
 }>;
@@ -591,3 +598,7 @@ export type EditProfileMutationVariables = Exact<{
 
 
 export type EditProfileMutation = { __typename?: 'Mutation', editProfile: { __typename?: 'EditProfileOutput', ok: boolean, error?: string | null } };
+
+export type EmailEditedUserFragment = { __typename?: 'User', verified: boolean, email: string };
+
+export type UsernameEditedUserFragment = { __typename?: 'User', username: string };

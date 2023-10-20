@@ -42,7 +42,7 @@ export const EditProfile = () => {
         client.writeFragment({
           id: `User:${userData.me.id}`,
           fragment: gql`
-            fragment EditedUser on User {
+            fragment EmailEditedUser on User {
               verified
               email
             }
@@ -58,7 +58,7 @@ export const EditProfile = () => {
         client.writeFragment({
           id: `User:${userData.me.id}`,
           fragment: gql`
-            fragment EditedUser on User {
+            fragment UsernameEditedUser on User {
               username
             }
           `,
