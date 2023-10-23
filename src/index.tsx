@@ -4,7 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./styles/styles.css";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./apollo";
-import App from "./App";
+import App from "./components/app";
 import { HelmetProvider } from "react-helmet-async";
 
 const root = ReactDOM.createRoot(
