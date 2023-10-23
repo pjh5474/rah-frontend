@@ -6,7 +6,7 @@ import { Categories } from "../../components/categories";
 import { SetHelmet } from "../../components/helmet";
 import { Store } from "../../components/store";
 import { StoresPageQuery, StoresPageQueryVariables } from "../../__api__/types";
-import { STORE_FRAGMENT } from "../../fragments";
+import { STORE_FRAGMENT, CATEGORY_FRAGMENT } from "../../fragments";
 
 const STORES_QUERY = gql`
   query storesPage($input: StoresInput!) {
@@ -14,11 +14,7 @@ const STORES_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImg
-        slug
-        storeCount
+        ...CategoryParts
       }
     }
     stores(input: $input) {
@@ -31,6 +27,7 @@ const STORES_QUERY = gql`
       }
     }
   }
+  ${CATEGORY_FRAGMENT}
   ${STORE_FRAGMENT}
 `;
 

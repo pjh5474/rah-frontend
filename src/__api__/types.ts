@@ -557,12 +557,21 @@ export type VerifyEmailOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type CategoryPartsFragment = { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number };
+
 export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, email: string, username: string, role: UserRole, verified: boolean } };
+
+export type CategoryQueryVariables = Exact<{
+  input: CategoryInput;
+}>;
+
+
+export type CategoryQuery = { __typename?: 'Query', category: { __typename?: 'CategoryOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null, category?: { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number } | null } };
 
 export type SearchStoreQueryVariables = Exact<{
   input: SearchStoreInput;
