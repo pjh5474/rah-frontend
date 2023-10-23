@@ -585,6 +585,13 @@ export type SearchStoreQueryVariables = Exact<{
 
 export type SearchStoreQuery = { __typename?: 'Query', searchStore: { __typename?: 'SearchStoreOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
 
+export type StoreQueryVariables = Exact<{
+  input: StoreInput;
+}>;
+
+
+export type StoreQuery = { __typename?: 'Query', store: { __typename?: 'StoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number }>, category: { __typename?: 'Category', name: string } } | null } };
+
 export type StoresPageQueryVariables = Exact<{
   input: StoresInput;
 }>;

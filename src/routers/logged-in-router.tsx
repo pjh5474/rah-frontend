@@ -5,6 +5,7 @@ import { useMe } from "../hooks/useMe";
 import { NotFound } from "../pages/404";
 import { Category } from "../pages/client/category";
 import { Search } from "../pages/client/search";
+import { Store } from "../pages/client/store";
 import { Stores } from "../pages/client/stores";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
@@ -16,6 +17,7 @@ const ClientRouter = [
   <Route path="/edit-profile" element={<EditProfile />} key="editProfile" />,
   <Route path="/search" element={<Search />} key="search" />,
   <Route path="/category/:slug" element={<Category />} key="category" />,
+  <Route path="/stores/:id" element={<Store />} key="store" />,
 ];
 
 export const LoggedInRouter = () => {

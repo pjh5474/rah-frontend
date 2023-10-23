@@ -1,4 +1,4 @@
-import { Store } from "./store";
+import { StoreComponent } from "./storeComponent";
 
 interface IShowStoresProps {
   stores: {
@@ -18,7 +18,7 @@ export const ShowStores = ({ stores }: IShowStoresProps) => {
         <h4 className="text-xl font-medium col-span-full">Stores not found.</h4>
       )}
       {stores?.map((store) => (
-        <Store
+        <StoreComponent
           id={store.id + ""}
           name={store.name}
           coverImg={store.coverImg}

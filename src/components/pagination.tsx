@@ -35,7 +35,7 @@ export const Pagination = ({ page, setPage, totalPages }: IPaginationProps) => {
   };
 
   return (
-    <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">
+    <div className="grid grid-cols-3 text-center max-w-lg items-center mx-auto mt-10">
       {page > 1 ? (
         <button
           onClick={onPrevPageClick}
@@ -54,11 +54,11 @@ export const Pagination = ({ page, setPage, totalPages }: IPaginationProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setPageInput(Number(event.target.value));
           }}
-          className="w-12 text-center mx-2"
+          className="w-12 text-center"
           type="number"
           value={pageInput}
         ></input>{" "}
-        of {totalPages}
+        of <span className="text-center mx-2 ">{totalPages}</span>
       </span>
       {page !== totalPages ? (
         <button
