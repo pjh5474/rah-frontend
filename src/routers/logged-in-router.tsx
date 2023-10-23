@@ -3,6 +3,7 @@ import { LogOutBtn } from "../components/button";
 import { Header } from "../components/header";
 import { useMe } from "../hooks/useMe";
 import { NotFound } from "../pages/404";
+import { Search } from "../pages/client/search";
 import { Stores } from "../pages/client/stores";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
@@ -12,6 +13,7 @@ const ClientRouter = [
   <Route path="/" element={<Stores />} key="client" />,
   <Route path="/confirm" element={<ConfirmEmail />} key="confirmEmail" />,
   <Route path="/edit-profile" element={<EditProfile />} key="editProfile" />,
+  <Route path="/search" element={<Search />} key="search" />,
 ];
 
 export const LoggedInRouter = () => {
