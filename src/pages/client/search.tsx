@@ -1,7 +1,8 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SetHelmet } from "../../components/helmet";
+import { Pagination } from "../../components/pagination";
 import { STORE_FRAGMENT } from "../../fragments";
 import {
   SearchStoreQuery,
@@ -24,6 +25,7 @@ const SEARCH_STORE = gql`
 `;
 
 export const Search = () => {
+  const [page, setPage] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
   const [callQuery, { loading, data, called }] = useLazyQuery<
@@ -34,24 +36,26 @@ export const Search = () => {
     const [_, query] = location.search.split("?term=");
     if (!query) {
       return navigate("/", { replace: true });
-    } else {
-      console.log(query);
     }
     callQuery({
       variables: {
         input: {
-          page: 1,
+          page,
           query,
         },
       },
     });
   }, [location]);
 
-  console.log(loading, data, called);
   return (
-    <div>
+    <div className="container mt-8 pb-20">
       <SetHelmet helmetTitle="Search" />
       <h1>Search</h1>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        totalPages={data?.searchStore.totalPages || 1}
+      />
     </div>
   );
 };
