@@ -557,6 +557,11 @@ export type VerifyEmailOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type CategoriesComponentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesComponentQuery = { __typename?: 'Query', allCategories: { __typename?: 'AllCategoriesOutput', ok: boolean, error?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number }> | null } };
+
 export type CategoryPartsFragment = { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number };
 
 export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } };
@@ -585,7 +590,7 @@ export type StoresPageQueryVariables = Exact<{
 }>;
 
 
-export type StoresPageQuery = { __typename?: 'Query', allCategories: { __typename?: 'AllCategoriesOutput', ok: boolean, error?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number }> | null }, stores: { __typename?: 'StoresOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, results?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
+export type StoresPageQuery = { __typename?: 'Query', stores: { __typename?: 'StoresOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, results?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
 
 export type CreateAccountMutationVariables = Exact<{
   createAccountInput: CreateAccountInput;
