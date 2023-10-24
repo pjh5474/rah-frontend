@@ -1,6 +1,6 @@
 import { StoreComponent } from "./storeComponent";
 
-interface IShowStoresProps {
+export interface IShowStoresProps {
   stores: {
     id: number;
     name: string;
