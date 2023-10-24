@@ -5,16 +5,6 @@ import { ME_QUERY } from "../../hooks/useMe";
 import { Header } from "../header";
 
 describe("<Header />", () => {
-  it("renders OK", () => {
-    render(
-      <BrowserRouter>
-        <MockedProvider>
-          <Header />
-        </MockedProvider>
-      </BrowserRouter>
-    );
-  });
-
   it("renders verify banner", async () => {
     await waitFor(async () => {
       const { getByText } = render(
@@ -28,6 +18,7 @@ describe("<Header />", () => {
                 data: {
                   me: {
                     id: 1,
+                    username: "username",
                     email: "email",
                     role: "Client",
                     verified: false,
@@ -61,6 +52,7 @@ describe("<Header />", () => {
                   me: {
                     id: 1,
                     email: "email",
+                    username: "username",
                     role: "Client",
                     verified: true,
                   },

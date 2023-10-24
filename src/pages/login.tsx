@@ -1,4 +1,4 @@
-import { ApolloError, gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
 import { LoginMutation, LoginMutationVariables } from "../__api__/types";
@@ -9,7 +9,7 @@ import { EMAIL_REGEX, LOCALSTORAGE_TOKEN } from "../constants";
 import { Logo } from "../components/logo";
 import { SetHelmet } from "../components/helmet";
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -45,16 +45,11 @@ export const Login = () => {
     }
   };
 
-  const onError = (error: ApolloError) => {
-    console.log(error);
-  };
-
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
     LoginMutationVariables
   >(LOGIN_MUTATION, {
     onCompleted,
-    onError,
   });
   const onSubmit = () => {
     if (!loading) {
@@ -101,7 +96,7 @@ export const Login = () => {
               required: "Password is required",
               minLength: {
                 value: 2,
-                message: "Password must be more than 2 chars.",
+                message: "Password must be more than 1 chars.",
               },
             })}
             name="password"
