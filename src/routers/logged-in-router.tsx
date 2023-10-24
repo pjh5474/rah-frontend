@@ -7,6 +7,7 @@ import { Category } from "../pages/client/category";
 import { Search } from "../pages/client/search";
 import { Store } from "../pages/client/store";
 import { Stores } from "../pages/client/stores";
+import { CreateStore } from "../pages/creator/create-store";
 import { MyStores } from "../pages/creator/my-store";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
@@ -26,7 +27,7 @@ const commonRoutes = [
 
 const CreatorRoutes = [
   { path: "/", element: <MyStores /> },
-  { path: "/add-restaurant", element: <h1>Add Restaurant</h1> },
+  { path: "/add-store", element: <CreateStore /> },
 ];
 
 export const LoggedInRouter = () => {

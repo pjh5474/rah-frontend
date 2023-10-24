@@ -349,6 +349,13 @@ export type MutationVerifyEmailArgs = {
   input: VerifyEmailInput;
 };
 
+export type MyStoresOutput = {
+  __typename?: 'MyStoresOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  stores: Array<Store>;
+};
+
 export type Order = {
   __typename?: 'Order';
   createdAt: Scalars['DateTime']['output'];
@@ -416,6 +423,7 @@ export type Query = {
   getOrders: GetOrdersOutput;
   getPayments: GetPaymentOutput;
   me: User;
+  myStores: MyStoresOutput;
   searchStore: SearchStoreOutput;
   store: StoreOutput;
   stores: StoresOutput;
@@ -605,6 +613,18 @@ export type CreateAccountMutationVariables = Exact<{
 
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null } };
+
+export type CreateStoreMutationVariables = Exact<{
+  input: CreateStoreInput;
+}>;
+
+
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null } };
+
+export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyStoresQuery = { __typename?: 'Query', myStores: { __typename?: 'MyStoresOutput', ok: boolean, error?: string | null, stores: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
