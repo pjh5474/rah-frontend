@@ -31,12 +31,11 @@ export const LogOutBtn = () => {
   };
 
   return (
-    <div className="m-4">
+    <button className="m-4" onClick={onClick}>
       <FontAwesomeIcon
         icon={faRightFromBracket}
-        onClick={onClick}
         className="hover:text-purple-400 mr-5"
       />
-    </div>
+    </button>
   );
 };
