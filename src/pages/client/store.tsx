@@ -38,17 +38,19 @@ export const Store = () => {
   return (
     <div>
       <SetHelmet helmetTitle="Store" />
-      <div
-        className="bg-amber-500 py-36 bg-center bg-cover"
-        style={{ backgroundImage: `url(${data?.store.store?.coverImg})` }}
-      >
-        <div className="bg-white w-4/12 py-8 pl-4 lg:pl-48">
-          <h4 className="text-4xl mb-3">{data?.store.store?.name}</h4>
-          <h5 className="text-sm font-light mb-2">
-            {data?.store.store?.category.name}
-          </h5>
+      {!loading && (
+        <div
+          className="bg-amber-500 py-36 bg-center bg-cover"
+          style={{ backgroundImage: `url(${data?.store.store?.coverImg})` }}
+        >
+          <div className="bg-white w-4/12 py-8 pl-4 lg:pl-48">
+            <h4 className="text-4xl mb-3">{data?.store.store?.name}</h4>
+            <h5 className="text-sm font-light mb-2">
+              {data?.store.store?.category.name}
+            </h5>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
