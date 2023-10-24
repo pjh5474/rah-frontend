@@ -3,6 +3,18 @@ import { BrowserRouter } from "react-router-dom";
 import { SearchStores } from "../searchStores";
 import userEvent from "@testing-library/user-event";
 
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => {
+  const realModule = jest.requireActual("react-router-dom");
+  return {
+    ...realModule,
+    useNavigate: () => {
+      return mockUseNavigate;
+    },
+  };
+});
+
 describe("<SearchStores />", () => {
   let renderResult: RenderResult;
   beforeEach(async () => {
@@ -43,6 +55,17 @@ describe("<SearchStores />", () => {
 
     await waitFor(() => {
       expect(input).toHaveValue("test");
+    });
+
+    await waitFor(() => {
+      userEvent.type(input, "{enter}");
+    });
+
+    await waitFor(() => {
+      expect(mockUseNavigate).toHaveBeenCalledWith({
+        pathname: "/search",
+        search: `?term=test`,
+      });
     });
   });
 });

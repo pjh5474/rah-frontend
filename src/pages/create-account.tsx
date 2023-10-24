@@ -12,7 +12,7 @@ import { Logo } from "../components/logo";
 import { EMAIL_REGEX } from "../constants";
 import { SetHelmet } from "../components/helmet";
 
-const CREATE_ACCOUNT_MUTATION = gql`
+export const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
@@ -109,7 +109,7 @@ export const CreateAccount = () => {
             {...register("password", {
               required: "Password is required",
               minLength: {
-                value: 2,
+                value: 3,
                 message: "Password must be more than 2 chars.",
               },
             })}
@@ -146,7 +146,7 @@ export const CreateAccount = () => {
             {...register("username", {
               required: "username is required",
               minLength: {
-                value: 2,
+                value: 3,
                 message: "Username must be more than 2 chars.",
               },
             })}

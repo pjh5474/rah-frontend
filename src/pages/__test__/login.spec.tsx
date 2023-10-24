@@ -82,7 +82,7 @@ describe("<Login />", () => {
     await waitFor(() => {
       const passwordMinLengthError = getByRole("alert");
       expect(passwordMinLengthError).toHaveTextContent(
-        /password must be more than 1 chars./i
+        /password must be more than 2 chars./i
       );
     });
   });
