@@ -18,15 +18,6 @@ describe("<Pagination />", () => {
   it("should render OK", async () => {
     const { container, getByRole } = renderResult;
 
-    expect(getByRole("prevPage")).toHaveTextContent("←");
-    expect(getByRole("prevPage")).toHaveClass(
-      "font-medium text-2xl focus:outline-none"
-    );
-    expect(getByRole("nextPage")).toHaveTextContent("→");
-    expect(getByRole("nextPage")).toHaveClass(
-      "font-medium text-2xl focus:outline-none"
-    );
-
     expect(container.firstChild).toHaveClass(
       "grid grid-cols-3 text-center max-w-lg items-center mx-auto mt-10"
     );

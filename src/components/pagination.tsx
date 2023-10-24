@@ -38,7 +38,6 @@ export const Pagination = ({ page, setPage, totalPages }: IPaginationProps) => {
     <div className="grid grid-cols-3 text-center max-w-lg items-center mx-auto mt-10">
       {page > 1 ? (
         <button
-          role={"prevPage"}
           onClick={onPrevPageClick}
           className="font-medium text-2xl focus:outline-none"
         >
@@ -50,7 +49,6 @@ export const Pagination = ({ page, setPage, totalPages }: IPaginationProps) => {
       <span>
         Page{" "}
         <input
-          role={"pageInput"}
           onBlur={handlePageChange}
           onKeyDown={handleKeyDown}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +62,6 @@ export const Pagination = ({ page, setPage, totalPages }: IPaginationProps) => {
       </span>
       {page !== totalPages ? (
         <button
-          role={"nextPage"}
           onClick={onNextPageClick}
           className="font-medium text-2xl focus:outline-none"
         >
