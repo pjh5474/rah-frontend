@@ -8,7 +8,8 @@ import { Search } from "../pages/client/search";
 import { Store } from "../pages/client/store";
 import { Stores } from "../pages/client/stores";
 import { CreateStore } from "../pages/creator/create-store";
-import { MyStores } from "../pages/creator/my-store";
+import { MyStore } from "../pages/creator/my-store";
+import { MyStores } from "../pages/creator/my-stores";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
 import { UserRole } from "../__api__/types";
@@ -27,6 +28,7 @@ const commonRoutes = [
 
 const CreatorRoutes = [
   { path: "/", element: <MyStores /> },
+  { path: "/stores/:id", element: <MyStore /> },
   { path: "/create-store", element: <CreateStore /> },
 ];
 

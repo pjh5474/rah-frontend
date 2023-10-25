@@ -352,6 +352,17 @@ export type MutationVerifyEmailArgs = {
   input: VerifyEmailInput;
 };
 
+export type MyStoreInput = {
+  id: Scalars['Float']['input'];
+};
+
+export type MyStoreOutput = {
+  __typename?: 'MyStoreOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  store?: Maybe<Store>;
+};
+
 export type MyStoresOutput = {
   __typename?: 'MyStoresOutput';
   error?: Maybe<Scalars['String']['output']>;
@@ -426,6 +437,7 @@ export type Query = {
   getOrders: GetOrdersOutput;
   getPayments: GetPaymentOutput;
   me: User;
+  myStore: MyStoreOutput;
   myStores: MyStoresOutput;
   searchStore: SearchStoreOutput;
   store: StoreOutput;
@@ -446,6 +458,11 @@ export type QueryGetOrderArgs = {
 
 export type QueryGetOrdersArgs = {
   input: GetOrdersInput;
+};
+
+
+export type QueryMyStoreArgs = {
+  input: MyStoreInput;
 };
 
 
@@ -624,6 +641,13 @@ export type CreateStoreMutationVariables = Exact<{
 
 
 export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null, storeId: number } };
+
+export type MyStoreQueryVariables = Exact<{
+  input: MyStoreInput;
+}>;
+
+
+export type MyStoreQuery = { __typename?: 'Query', myStore: { __typename?: 'MyStoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } } | null } };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 

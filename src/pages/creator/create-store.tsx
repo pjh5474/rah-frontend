@@ -10,7 +10,7 @@ import {
   CreateStoreMutation,
   CreateStoreMutationVariables,
 } from "../../__api__/types";
-import { MY_STORES_QUERY } from "./my-store";
+import { MY_STORES_QUERY } from "./my-stores";
 
 const CREATE_STORE_MUTATION = gql`
   mutation createStore($input: CreateStoreInput!) {
