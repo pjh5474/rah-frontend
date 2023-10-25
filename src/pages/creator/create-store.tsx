@@ -1,7 +1,11 @@
 import { gql, useMutation } from "@apollo/client";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { set, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button";
+import { FormError } from "../../components/form-error";
 import { SetHelmet } from "../../components/helmet";
+import { DEFAULT_IMAGE_URL } from "../../constants";
 import {
   CreateStoreMutation,
   CreateStoreMutationVariables,
@@ -18,16 +22,32 @@ const CREATE_STORE_MUTATION = gql`
 
 interface IFormProps {
   name: string;
-  coverImg: string;
   description: string;
   categoryName: string;
+  coverImg?: FileList;
 }
 
 export const CreateStore = () => {
-  const [createStoreMutation, { loading, data }] = useMutation<
+  const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
+  const onCompleted = (data: CreateStoreMutation) => {
+    const {
+      createStore: { ok, error },
+    } = data;
+    if (ok) {
+      setUploading(false);
+      alert("Store Created!");
+      navigate("/");
+    }
+  };
+
+  const [createStoreMutation, { data }] = useMutation<
     CreateStoreMutation,
     CreateStoreMutationVariables
-  >(CREATE_STORE_MUTATION);
+  >(CREATE_STORE_MUTATION, {
+    onCompleted,
+  });
+
   const {
     register,
     getValues,
@@ -36,8 +56,39 @@ export const CreateStore = () => {
   } = useForm<IFormProps>({
     mode: "onChange",
   });
-  const onSubmit = () => {
-    console.log(getValues());
+
+  const onSubmit = async () => {
+    try {
+      setUploading(true);
+      const { name, description, categoryName, coverImg } = getValues();
+      const actualCoverImg = coverImg?.[0];
+      let imgUrl;
+      if (actualCoverImg) {
+        const formBody = new FormData();
+        formBody.append("file", actualCoverImg);
+        const { url } = await (
+          await fetch("http://localhost:4000/uploads", {
+            method: "POST",
+            body: formBody,
+          })
+        ).json();
+        imgUrl = url;
+      } else {
+        imgUrl = DEFAULT_IMAGE_URL;
+      }
+      createStoreMutation({
+        variables: {
+          input: {
+            name,
+            description,
+            categoryName,
+            coverImg: imgUrl,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="container">
@@ -49,33 +100,60 @@ export const CreateStore = () => {
             required: "Name is required",
           })}
           className="input"
+          name="name"
           required
           type="text"
-          placeholder="Name"
+          placeholder="Store Name"
         />
+        {errors.name?.message && (
+          <FormError errorMessage={errors.name?.message} />
+        )}
         <input
           {...register("categoryName", {
             required: "Category is required",
           })}
           className="input"
+          name="categoryName"
           required
           type="text"
           placeholder="Category Name"
         />
+        {errors.categoryName?.message && (
+          <FormError errorMessage={errors.categoryName?.message} />
+        )}
         <input
           {...register("description", {
             required: "Description is required",
+            maxLength: {
+              value: 140,
+              message: "Description should be less than 140 chars.",
+            },
           })}
           className="input"
+          name="description"
           required
           type="text"
           placeholder="Description"
         />
+        {errors.description?.message && (
+          <FormError errorMessage={errors.description?.message} />
+        )}
+        <div>
+          <input
+            {...register("coverImg")}
+            type="file"
+            name="coverImg"
+            accept="image/*"
+          />
+        </div>
         <Button
-          loading={loading}
+          loading={uploading}
           canClick={isValid}
           actionText="Create Store"
         />
+        {data?.createStore.error && (
+          <FormError errorMessage={data.createStore.error} />
+        )}
       </form>
     </div>
   );
