@@ -595,6 +595,8 @@ export type CategoryPartsFragment = { __typename?: 'Category', id: number, name:
 
 export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } };
 
+export type CommissionPartsFragment = { __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -635,6 +637,13 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null } };
 
+export type CreateCommissionMutationVariables = Exact<{
+  input: CreateCommissionInput;
+}>;
+
+
+export type CreateCommissionMutation = { __typename?: 'Mutation', createCommission: { __typename?: 'CreateCommissionOutput', ok: boolean, error?: string | null } };
+
 export type CreateStoreMutationVariables = Exact<{
   input: CreateStoreInput;
 }>;
@@ -647,7 +656,7 @@ export type MyStoreQueryVariables = Exact<{
 }>;
 
 
-export type MyStoreQuery = { __typename?: 'Query', myStore: { __typename?: 'MyStoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } } | null } };
+export type MyStoreQuery = { __typename?: 'Query', myStore: { __typename?: 'MyStoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null }>, category: { __typename?: 'Category', name: string } } | null } };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 

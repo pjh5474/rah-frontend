@@ -21,3 +21,21 @@ export const STORE_FRAGMENT = gql`
     }
   }
 `;
+
+export const COMMISSION_FRAGMENT = gql`
+  fragment CommissionParts on Commission {
+    id
+    name
+    price
+    photo
+    description
+    options {
+      name
+      extra
+      choices {
+        name
+        extra
+      }
+    }
+  }
+`;
