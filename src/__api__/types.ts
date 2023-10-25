@@ -152,6 +152,7 @@ export type CreateStoreOutput = {
   __typename?: 'CreateStoreOutput';
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+  storeId: Scalars['Int']['output'];
 };
 
 export type DeleteCommissionInput = {
@@ -575,7 +576,7 @@ export type CategoriesComponentQuery = { __typename?: 'Query', allCategories: { 
 
 export type CategoryPartsFragment = { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number };
 
-export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } };
+export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -587,28 +588,28 @@ export type CategoryQueryVariables = Exact<{
 }>;
 
 
-export type CategoryQuery = { __typename?: 'Query', category: { __typename?: 'CategoryOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null, category?: { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number } | null } };
+export type CategoryQuery = { __typename?: 'Query', category: { __typename?: 'CategoryOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } }> | null, category?: { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number } | null } };
 
 export type SearchStoreQueryVariables = Exact<{
   input: SearchStoreInput;
 }>;
 
 
-export type SearchStoreQuery = { __typename?: 'Query', searchStore: { __typename?: 'SearchStoreOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
+export type SearchStoreQuery = { __typename?: 'Query', searchStore: { __typename?: 'SearchStoreOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, stores?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } }> | null } };
 
 export type StoreQueryVariables = Exact<{
   input: StoreInput;
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store: { __typename?: 'StoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number }>, category: { __typename?: 'Category', name: string } } | null } };
+export type StoreQuery = { __typename?: 'Query', store: { __typename?: 'StoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number }>, category: { __typename?: 'Category', name: string } } | null } };
 
 export type StoresPageQueryVariables = Exact<{
   input: StoresInput;
 }>;
 
 
-export type StoresPageQuery = { __typename?: 'Query', stores: { __typename?: 'StoresOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, results?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> | null } };
+export type StoresPageQuery = { __typename?: 'Query', stores: { __typename?: 'StoresOutput', ok: boolean, error?: string | null, totalPages?: number | null, totalResults?: number | null, results?: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } }> | null } };
 
 export type CreateAccountMutationVariables = Exact<{
   createAccountInput: CreateAccountInput;
@@ -622,12 +623,12 @@ export type CreateStoreMutationVariables = Exact<{
 }>;
 
 
-export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null } };
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null, storeId: number } };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyStoresQuery = { __typename?: 'Query', myStores: { __typename?: 'MyStoresOutput', ok: boolean, error?: string | null, stores: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, category: { __typename?: 'Category', name: string } }> } };
+export type MyStoresQuery = { __typename?: 'Query', myStores: { __typename?: 'MyStoresOutput', ok: boolean, error?: string | null, stores: Array<{ __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } }> } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;

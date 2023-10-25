@@ -27,7 +27,7 @@ const commonRoutes = [
 
 const CreatorRoutes = [
   { path: "/", element: <MyStores /> },
-  { path: "/add-store", element: <CreateStore /> },
+  { path: "/create-store", element: <CreateStore /> },
 ];
 
 export const LoggedInRouter = () => {

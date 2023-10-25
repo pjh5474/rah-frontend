@@ -1,6 +1,6 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
@@ -10,12 +10,14 @@ import {
   CreateStoreMutation,
   CreateStoreMutationVariables,
 } from "../../__api__/types";
+import { MY_STORES_QUERY } from "./my-store";
 
 const CREATE_STORE_MUTATION = gql`
   mutation createStore($input: CreateStoreInput!) {
     createStore(input: $input) {
       ok
       error
+      storeId
     }
   }
 `;
@@ -28,14 +30,42 @@ interface IFormProps {
 }
 
 export const CreateStore = () => {
+  const client = useApolloClient();
+  const [imageUrl, setImageUrl] = useState<string>(DEFAULT_IMAGE_URL);
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
   const onCompleted = (data: CreateStoreMutation) => {
     const {
-      createStore: { ok, error },
+      createStore: { ok, storeId },
     } = data;
     if (ok) {
+      const { name, description, categoryName, coverImg } = getValues();
       setUploading(false);
+      const queryResult = client.readQuery({
+        query: MY_STORES_QUERY,
+      });
+      client.writeQuery({
+        query: MY_STORES_QUERY,
+        data: {
+          myStores: {
+            ...queryResult.myStores,
+            stores: [
+              ...queryResult.myStores.stores,
+              {
+                name,
+                description,
+                category: {
+                  name: categoryName,
+                  __typename: "Category",
+                },
+                coverImg: imageUrl,
+                id: storeId,
+                __typename: "Store",
+              },
+            ],
+          },
+        },
+      });
       alert("Store Created!");
       navigate("/");
     }
@@ -76,6 +106,7 @@ export const CreateStore = () => {
       } else {
         imgUrl = DEFAULT_IMAGE_URL;
       }
+      setImageUrl(imgUrl);
       createStoreMutation({
         variables: {
           input: {
@@ -91,10 +122,13 @@ export const CreateStore = () => {
     }
   };
   return (
-    <div className="container">
+    <div className="container flex flex-col items-center mt-32">
       <SetHelmet helmetTitle="Create Store" />
-      <h1>Create Store</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h4 className="font-semibold text-2xl mb-3">Create Store</h4>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5"
+      >
         <input
           {...register("name", {
             required: "Name is required",

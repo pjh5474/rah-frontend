@@ -15,6 +15,7 @@ export const STORE_FRAGMENT = gql`
     id
     name
     coverImg
+    description
     category {
       name
     }
