@@ -144,6 +144,7 @@ export type CreatePaymentOutput = {
 export type CreateStoreInput = {
   categoryName: Scalars['String']['input'];
   coverImg: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
 };
 
@@ -213,6 +214,7 @@ export type EditProfileOutput = {
 export type EditStoreInput = {
   categoryName?: InputMaybe<Scalars['String']['input']>;
   coverImg?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   storeId: Scalars['Float']['input'];
 };
@@ -486,6 +488,7 @@ export type Store = {
   coverImg: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   creator: User;
+  description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   orders: Array<Order>;
