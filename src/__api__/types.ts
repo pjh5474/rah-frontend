@@ -103,6 +103,7 @@ export type CreateCommissionInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   options?: InputMaybe<Array<CommissionOptionInputType>>;
+  photo?: InputMaybe<Scalars['String']['input']>;
   price: Scalars['Float']['input'];
   storeId: Scalars['Float']['input'];
 };

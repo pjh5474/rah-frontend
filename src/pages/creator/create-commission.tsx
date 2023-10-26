@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
 import { SetHelmet } from "../../components/helmet";
+import { DEFAULT_IMAGE_URL } from "../../constants";
 import {
   CreateCommissionMutation,
   CreateCommissionMutationVariables,
@@ -20,18 +21,25 @@ const CREATE_COMMISSION_MUTATION = gql`
   }
 `;
 
-interface IFormProps {
+interface IBasicFormProps {
   name: string;
-  price: string;
+  photo?: FileList;
   description: string;
+  price: string;
+}
+
+interface IOptionFormProps {
   [key: string]: string;
 }
+
+type IFormProps = IBasicFormProps & IOptionFormProps;
 
 interface IOptionChoicesProps {
   [key: number]: number[];
 }
 
 export const CreateCommission = () => {
+  const [imageUrl, setImageUrl] = useState<string>(DEFAULT_IMAGE_URL);
   const {
     register,
     handleSubmit,
@@ -94,31 +102,54 @@ export const CreateCommission = () => {
       },
     ],
   });
-  const onSubmit = () => {
-    const { name, price, description, ...rest } = getValues();
-    const optionObjects = optionsNumber.map((theId) => ({
-      name: rest[`${theId}-OptionName`],
-      choices: optionChoices[theId]?.map((choiceId) => ({
-        name: rest[`${theId}-${choiceId}-OptionChoiceName`],
-        extra: +rest[`${theId}-${choiceId}-OptionChoiceExtra`] || 0,
-      })),
-      extra: +rest[`${theId}-OptionExtra`] || 0,
-    }));
 
-    console.log(optionObjects);
+  const onSubmit = async () => {
+    try {
+      const { name, photo, price, description, ...rest } = getValues();
 
-    createCommissionMutation({
-      variables: {
-        input: {
-          name,
-          price: +price,
-          description,
-          storeId: +storeId,
-          options: optionObjects,
+      const actualCoverImg = photo?.[0];
+      let imgUrl;
+      if (actualCoverImg) {
+        const formBody = new FormData();
+        formBody.append("file", actualCoverImg);
+        const { url } = await (
+          await fetch("http://localhost:4000/uploads", {
+            method: "POST",
+            body: formBody,
+          })
+        ).json();
+        imgUrl = url;
+      } else {
+        imgUrl = DEFAULT_IMAGE_URL;
+      }
+      setImageUrl(imgUrl);
+
+      const optionObjects = optionsNumber.map((id) => ({
+        name: rest[`${id}-OptionName`],
+        extra: +rest[`${id}-OptionExtra`] || 0,
+        choices: optionChoices[id]?.map((choiceId) => ({
+          name: rest[`${id}-${choiceId}-OptionChoiceName`],
+          extra: +rest[`${id}-${choiceId}-OptionChoiceExtra`] || 0,
+        })),
+      })) as CreateCommissionMutationVariables["input"]["options"];
+
+      createCommissionMutation({
+        variables: {
+          input: {
+            name,
+            price: +price,
+            description,
+            photo: imgUrl,
+            storeId: +storeId,
+            options:
+              optionObjects as CreateCommissionMutationVariables["input"]["options"],
+          },
         },
-      },
-    });
-    // navigate(-1);
+      });
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className=" contianer flex flex-col items-center mt-32 ">
@@ -139,6 +170,15 @@ export const CreateCommission = () => {
         {errors.name?.message && (
           <FormError errorMessage={errors.name?.message} />
         )}
+        <div>
+          <input
+            {...register("photo")}
+            type="file"
+            name="photo"
+            accept="image/*"
+          />
+        </div>
+
         <input
           {...register("price", {
             required: "Commission Price is required.",
