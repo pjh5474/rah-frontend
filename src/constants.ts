@@ -4,3 +4,5 @@ export const EMAIL_REGEX =
 
 export const DEFAULT_IMAGE_URL =
   "https://rah-nest-backend-s3.s3.ap-northeast-2.amazonaws.com/1698211828203defaultImage.png";
+
+export const IMAGE_FILE_SIZE = 1024 * 1024 * 3; // 3MB

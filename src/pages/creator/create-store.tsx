@@ -6,6 +6,7 @@ import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
 import { SetHelmet } from "../../components/helmet";
 import { DEFAULT_IMAGE_URL } from "../../constants";
+import { CheckFileSize } from "../../hooks/checkImageSize";
 import {
   CreateStoreMutation,
   CreateStoreMutationVariables,
@@ -96,6 +97,7 @@ export const CreateStore = () => {
       if (actualCoverImg) {
         const formBody = new FormData();
         formBody.append("file", actualCoverImg);
+        formBody.append("targetFolder", "storePhoto");
         const { url } = await (
           await fetch("http://localhost:4000/uploads", {
             method: "POST",
@@ -178,6 +180,9 @@ export const CreateStore = () => {
             type="file"
             name="coverImg"
             accept="image/*"
+            onChange={(e) => {
+              CheckFileSize(e);
+            }}
           />
         </div>
         <Button

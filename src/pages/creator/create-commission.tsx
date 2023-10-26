@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
 import { SetHelmet } from "../../components/helmet";
-import { DEFAULT_IMAGE_URL } from "../../constants";
+import { DEFAULT_IMAGE_URL, IMAGE_FILE_SIZE } from "../../constants";
+import { CheckFileSize } from "../../hooks/checkImageSize";
 import {
   CreateCommissionMutation,
   CreateCommissionMutationVariables,
@@ -112,6 +113,7 @@ export const CreateCommission = () => {
       if (actualCoverImg) {
         const formBody = new FormData();
         formBody.append("file", actualCoverImg);
+        formBody.append("targetFolder", "commissionPhoto");
         const { url } = await (
           await fetch("http://localhost:4000/uploads", {
             method: "POST",
@@ -139,7 +141,7 @@ export const CreateCommission = () => {
             name,
             price: +price,
             description,
-            photo: imgUrl,
+            photo: imageUrl,
             storeId: +storeId,
             options:
               optionObjects as CreateCommissionMutationVariables["input"]["options"],
@@ -151,6 +153,7 @@ export const CreateCommission = () => {
       console.log(error);
     }
   };
+
   return (
     <div className=" contianer flex flex-col items-center mt-32 ">
       <SetHelmet helmetTitle="Add Commission" />
@@ -176,6 +179,9 @@ export const CreateCommission = () => {
             type="file"
             name="photo"
             accept="image/*"
+            onChange={(e) => {
+              CheckFileSize(e);
+            }}
           />
         </div>
 
