@@ -27,6 +27,10 @@ interface IFormProps {
   [key: string]: string;
 }
 
+interface IOptionChoicesProps {
+  [key: number]: number[];
+}
+
 export const CreateCommission = () => {
   const {
     register,
@@ -41,6 +45,9 @@ export const CreateCommission = () => {
   });
 
   const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
+
+  const [optionChoices, setOptionChoices] = useState<IOptionChoicesProps>({});
+
   const onAddOptionClick = () => {
     setOptionsNumber((current) => [Date.now(), ...current]);
   };
@@ -50,6 +57,24 @@ export const CreateCommission = () => {
     setValue(`${idToDelete}-OptionExtra`, "");
     unregister(`${idToDelete}-OptionName`);
     unregister(`${idToDelete}-OptionExtra`);
+  };
+
+  const onAddOptionChoiceClick = (optionId: number) => {
+    setOptionChoices((current) => ({
+      ...current,
+      [optionId]: [...(current[optionId] || []), Date.now()],
+    }));
+  };
+
+  const onDeleteOptionChoiceClick = (optionId: number, choiceId: number) => {
+    setOptionChoices((current) => ({
+      ...current,
+      [optionId]: current[optionId].filter((id) => id !== choiceId),
+    }));
+    setValue(`${optionId}-${choiceId}-OptionChoiceName`, "");
+    setValue(`${optionId}-${choiceId}-OptionChoiceExtra`, "");
+    unregister(`${optionId}-${choiceId}-OptionChoiceName`);
+    unregister(`${optionId}-${choiceId}-OptionChoiceExtra`);
   };
 
   const { id: storeId } = useParams() as { id: string };
@@ -73,8 +98,15 @@ export const CreateCommission = () => {
     const { name, price, description, ...rest } = getValues();
     const optionObjects = optionsNumber.map((theId) => ({
       name: rest[`${theId}-OptionName`],
+      choices: optionChoices[theId]?.map((choiceId) => ({
+        name: rest[`${theId}-${choiceId}-OptionChoiceName`],
+        extra: +rest[`${theId}-${choiceId}-OptionChoiceExtra`] || 0,
+      })),
       extra: +rest[`${theId}-OptionExtra`] || 0,
     }));
+
+    console.log(optionObjects);
+
     createCommissionMutation({
       variables: {
         input: {
@@ -86,7 +118,7 @@ export const CreateCommission = () => {
         },
       },
     });
-    navigate(-1);
+    // navigate(-1);
   };
   return (
     <div className=" contianer flex flex-col items-center mt-32 ">
@@ -142,41 +174,80 @@ export const CreateCommission = () => {
           <FormError errorMessage={errors.description?.message} />
         )}
         <div className="my-10">
-          <h4 className="font-medium mb-3 text-lg">Commission Options</h4>
+          <h4 className="font-medium mb-3 text-lg ml-2">Commission Options</h4>
           <span
             onClick={onAddOptionClick}
-            className=" cursor-pointer text-white bg-amber-500 py-1 px-2 mt-5"
+            className=" cursor-pointer text-white bg-amber-500 ml-2 py-1 px-2 mt-5 hover:ring-2 hover:ring-amber-400 hover:ring-opacity-70"
           >
             Add Commission Options
           </span>
           {optionsNumber.length !== 0 &&
             optionsNumber.map((id) => (
               <div
-                className="mt-5 grid grid-cols-3 gap-2"
                 key={`DishOption-${id}`}
+                className="px-2 py-2 border-amber-500 focus-within:border-purple-500 focus-within:shadow-md focus-within:shadow-purple-400  hover:border-purple-500 border-2 mt-5"
               >
-                <input
-                  {...register(`${id}-OptionName`)}
-                  name={`${id}-OptionName`}
-                  className="py-2 px-4 focus:outline-none focus:border-gray-600 border-2 mr-3 w-auto"
-                  type="text"
-                  required
-                  placeholder="Option Name"
-                />
-                <input
-                  {...register(`${id}-OptionExtra`)}
-                  name={`${id}-OptionExtra`}
-                  className="py-2 px-4 focus:outline-none focus:border-gray-600 border-2 mr-3 w-auto"
-                  type="number"
-                  min={0}
-                  placeholder="Option Extra Price"
-                />
+                <div className="grid grid-cols-5 gap-2 mb-5">
+                  <input
+                    {...register(`${id}-OptionName`)}
+                    name={`${id}-OptionName`}
+                    className="col-span-2 py-2 px-4 focus:outline-none focus:border-amber-500 border-2 mr-3 w-auto placeholder:text-sm"
+                    type="text"
+                    required
+                    placeholder="Option"
+                  />
+                  <input
+                    {...register(`${id}-OptionExtra`)}
+                    name={`${id}-OptionExtra`}
+                    className="col-span-2 py-2 px-4 focus:outline-none focus:border-amber-500 border-2 mr-3 w-auto placeholder:text-sm"
+                    type="number"
+                    min={0}
+                    placeholder="Extra Price"
+                  />
+                  <span
+                    className=" col-span-1 cursor-pointer text-white bg-red-500 py-3 px-4 w-auto text-center hover:ring-2 hover:ring-red-400 hover:ring-opacity-70"
+                    onClick={() => onDeleteOptionClick(id)}
+                  >
+                    Delete
+                  </span>
+                </div>
                 <span
-                  className="cursor-pointer text-white bg-purple-500 py-3 px-4 w-auto"
-                  onClick={() => onDeleteOptionClick(id)}
+                  onClick={() => onAddOptionChoiceClick(id)}
+                  className=" cursor-pointer text-white bg-sky-600 py-1 px-2 hover:ring-2 hover:ring-sky-400 hover:ring-opacity-70"
                 >
-                  Delete Option
+                  Add Option Choices
                 </span>
+                {optionChoices[id] &&
+                  optionChoices[id].length !== 0 &&
+                  optionChoices[id].map((choiceId) => (
+                    <div
+                      key={`${id}-${choiceId}`}
+                      className="grid grid-cols-5 gap-2 mt-5 mb-5"
+                    >
+                      <input
+                        {...register(`${id}-${choiceId}-OptionChoiceName`)}
+                        name={`${id}-${choiceId}-OptionChoiceName`}
+                        className="col-span-2 py-2 px-4 focus:outline-none focus:border-sky-600 border-2 mr-3 w-auto placeholder:text-sm"
+                        type="text"
+                        required
+                        placeholder="Choice"
+                      />
+                      <input
+                        {...register(`${id}-${choiceId}-OptionChoiceExtra`)}
+                        name={`${id}-${choiceId}-OptionChoiceExtra`}
+                        className="col-span-2 py-2 px-4 focus:outline-none focus:border-sky-600 border-2 mr-3 w-auto placeholder:text-sm"
+                        type="number"
+                        min={0}
+                        placeholder="Extra Price"
+                      />
+                      <span
+                        className=" col-span-1 cursor-pointer text-white bg-red-500 py-3 px-4 w-auto text-center hover:ring-2 hover:ring-red-400 hover:ring-opacity-70"
+                        onClick={() => onDeleteOptionChoiceClick(id, choiceId)}
+                      >
+                        Delete
+                      </span>
+                    </div>
+                  ))}
               </div>
             ))}
         </div>
