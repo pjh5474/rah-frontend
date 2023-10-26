@@ -59,6 +59,8 @@ export const Store = () => {
                 photo={commission.photo || DEFAULT_IMAGE_URL}
                 description={commission.description || "No Description"}
                 price={commission.price}
+                isCustomer={true}
+                options={commission.options}
               />
             ))}
           </div>
