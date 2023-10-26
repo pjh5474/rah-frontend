@@ -1,7 +1,21 @@
 import { gql, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTheme,
+  VictoryVoronoiContainer,
+} from "victory";
+import { Commission } from "../../components/commission";
 import { SetHelmet } from "../../components/helmet";
-import { COMMISSION_FRAGMENT, STORE_FRAGMENT } from "../../fragments";
+import { DEFAULT_IMAGE_URL } from "../../constants";
+import {
+  COMMISSION_FRAGMENT,
+  ORDERS_FRAGMENT,
+  STORE_FRAGMENT,
+} from "../../fragments";
 import { MyStoreQuery, MyStoreQueryVariables } from "../../__api__/types";
 
 export const MY_STORE_QUERY = gql`
@@ -14,11 +28,15 @@ export const MY_STORE_QUERY = gql`
         commissions {
           ...CommissionParts
         }
+        orders {
+          ...OrderParts
+        }
       }
     }
   }
   ${STORE_FRAGMENT}
   ${COMMISSION_FRAGMENT}
+  ${ORDERS_FRAGMENT}
 `;
 
 export const MyStore = () => {
@@ -33,6 +51,12 @@ export const MyStore = () => {
       },
     }
   );
+
+  // const chartRawData = data?.myStore.store?.orders.map((order) => ({
+  //   x: order.createdAt,
+  //   y: order.total,
+  // }));
+
   return (
     <div>
       <SetHelmet helmetTitle={`My Store - ${data?.myStore.store?.name}`} />
@@ -58,7 +82,65 @@ export const MyStore = () => {
         <div className=" mt-10">
           {data?.myStore.ok && data?.myStore.store?.commissions.length === 0 ? (
             <h4 className="text-xl mb-5">Please make a commission menu.</h4>
-          ) : null}
+          ) : (
+            <div className="grid mt-10 lg:grid-cols-3 gap-x-5 gap-y-7">
+              {data?.myStore.store?.commissions.map((commission) => (
+                <Commission
+                  name={commission.name}
+                  photo={commission.photo || DEFAULT_IMAGE_URL}
+                  description={commission.description || "No Description"}
+                  price={commission.price}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="mt-20 mb-10">
+          <h4 className="text-center text-2xl font-medium">Sales</h4>
+          {data?.myStore.ok && data?.myStore.store?.orders.length === 0 ? (
+            <div className=" mt-10">
+              <h4 className="text-xl mb-5 text-center">
+                You have no sales yet
+              </h4>
+            </div>
+          ) : (
+            <div className=" mt-10">
+              <VictoryChart
+                theme={VictoryTheme.material}
+                width={window.innerWidth}
+                height={500}
+                containerComponent={<VictoryVoronoiContainer />}
+              >
+                <VictoryLine
+                  labels={({ datum }) => `￦ ${datum.y}`}
+                  labelComponent={
+                    <VictoryLabel
+                      style={{ fontSize: 10 }}
+                      renderInPortal
+                      dy={-20}
+                    />
+                  }
+                  data={
+                    data?.myStore.store?.orders.map((order) => ({
+                      x: order.createdAt,
+                      y: order.total,
+                    })) || []
+                  }
+                  interpolation="natural"
+                  style={{
+                    data: {
+                      strokeWidth: 5,
+                    },
+                  }}
+                />
+                <VictoryAxis
+                  tickLabelComponent={<VictoryLabel renderInPortal />}
+                  style={{ tickLabels: { fontSize: 20, fill: "#D97706" } }}
+                  tickFormat={(tick) => new Date(tick).toLocaleDateString("ko")}
+                />
+              </VictoryChart>
+            </div>
+          )}
         </div>
       </div>
     </div>

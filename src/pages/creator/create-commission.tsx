@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
 import { SetHelmet } from "../../components/helmet";
-import { DEFAULT_IMAGE_URL, IMAGE_FILE_SIZE } from "../../constants";
+import { DEFAULT_IMAGE_URL } from "../../constants";
 import { CheckFileSize } from "../../hooks/checkImageSize";
 import {
   CreateCommissionMutation,
@@ -88,7 +88,7 @@ export const CreateCommission = () => {
 
   const { id: storeId } = useParams() as { id: string };
   const navigate = useNavigate();
-  const [createCommissionMutation, { loading, error, data }] = useMutation<
+  const [createCommissionMutation, { loading, data }] = useMutation<
     CreateCommissionMutation,
     CreateCommissionMutationVariables
   >(CREATE_COMMISSION_MUTATION, {

@@ -40,7 +40,7 @@ export const CreateStore = () => {
       createStore: { ok, storeId },
     } = data;
     if (ok) {
-      const { name, description, categoryName, coverImg } = getValues();
+      const { name, description, categoryName } = getValues();
       setUploading(false);
       const queryResult = client.readQuery({
         query: MY_STORES_QUERY,

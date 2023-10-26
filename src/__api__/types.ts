@@ -598,6 +598,8 @@ export type StorePartsFragment = { __typename?: 'Store', id: number, name: strin
 
 export type CommissionPartsFragment = { __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null };
 
+export type OrderPartsFragment = { __typename?: 'Order', id: number, createdAt: any, total?: number | null, status: OrderStatus };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -622,7 +624,7 @@ export type StoreQueryVariables = Exact<{
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store: { __typename?: 'StoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number }>, category: { __typename?: 'Category', name: string } } | null } };
+export type StoreQuery = { __typename?: 'Query', store: { __typename?: 'StoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null }>, category: { __typename?: 'Category', name: string } } | null } };
 
 export type StoresPageQueryVariables = Exact<{
   input: StoresInput;
@@ -657,7 +659,7 @@ export type MyStoreQueryVariables = Exact<{
 }>;
 
 
-export type MyStoreQuery = { __typename?: 'Query', myStore: { __typename?: 'MyStoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null }>, category: { __typename?: 'Category', name: string } } | null } };
+export type MyStoreQuery = { __typename?: 'Query', myStore: { __typename?: 'MyStoreOutput', ok: boolean, error?: string | null, store?: { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, commissions: Array<{ __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null }>, orders: Array<{ __typename?: 'Order', id: number, createdAt: any, total?: number | null, status: OrderStatus }>, category: { __typename?: 'Category', name: string } } | null } };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 

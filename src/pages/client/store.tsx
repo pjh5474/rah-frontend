@@ -1,7 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { Commission } from "../../components/commission";
 import { SetHelmet } from "../../components/helmet";
-import { STORE_FRAGMENT } from "../../fragments";
+import { DEFAULT_IMAGE_URL } from "../../constants";
+import { COMMISSION_FRAGMENT, STORE_FRAGMENT } from "../../fragments";
 import { StoreQuery, StoreQueryVariables } from "../../__api__/types";
 
 const STORE_QUERY = gql`
@@ -12,14 +14,13 @@ const STORE_QUERY = gql`
       store {
         ...StoreParts
         commissions {
-          id
-          name
-          price
+          ...CommissionParts
         }
       }
     }
   }
   ${STORE_FRAGMENT}
+  ${COMMISSION_FRAGMENT}
 `;
 
 export const Store = () => {
@@ -39,17 +40,29 @@ export const Store = () => {
     <div>
       <SetHelmet helmetTitle="Store" />
       {!loading && (
-        <div
-          className="bg-amber-500 py-36 bg-center bg-cover"
-          style={{ backgroundImage: `url(${data?.store.store?.coverImg})` }}
-        >
-          <div className="bg-white w-4/12 py-8 pl-4 lg:pl-48">
-            <h4 className="text-4xl mb-3">{data?.store.store?.name}</h4>
-            <h5 className="text-sm font-light mb-2">
-              {data?.store.store?.category.name}
-            </h5>
+        <>
+          <div
+            className="bg-amber-500 py-36 bg-center bg-cover"
+            style={{ backgroundImage: `url(${data?.store.store?.coverImg})` }}
+          >
+            <div className="bg-white w-4/12 py-8 pl-4 lg:pl-48">
+              <h4 className="text-4xl mb-3">{data?.store.store?.name}</h4>
+              <h5 className="text-sm font-light mb-2">
+                {data?.store.store?.category.name}
+              </h5>
+            </div>
           </div>
-        </div>
+          <div className="container grid mt-10 lg:grid-cols-3 gap-x-5 gap-y-7">
+            {data?.store.store?.commissions.map((commission) => (
+              <Commission
+                name={commission.name}
+                photo={commission.photo || DEFAULT_IMAGE_URL}
+                description={commission.description || "No Description"}
+                price={commission.price}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
