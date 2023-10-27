@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { nanoid } from "nanoid";
 import { Link, useParams } from "react-router-dom";
 import {
   VictoryAxis,
@@ -85,12 +86,15 @@ export const MyStore = () => {
           ) : (
             <div className="grid mt-10 lg:grid-cols-3 gap-x-5 gap-y-7">
               {data?.myStore.store?.commissions.map((commission) => (
-                <Commission
-                  name={commission.name}
-                  photo={commission.photo || DEFAULT_IMAGE_URL}
-                  description={commission.description || "No Description"}
-                  price={commission.price}
-                />
+                <div key={nanoid()}>
+                  <Commission
+                    id={commission.id}
+                    name={commission.name}
+                    photo={commission.photo || DEFAULT_IMAGE_URL}
+                    description={commission.description || "No Description"}
+                    price={commission.price}
+                  />
+                </div>
               ))}
             </div>
           )}

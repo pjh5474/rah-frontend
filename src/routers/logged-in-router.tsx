@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LogOutBtn } from "../components/button";
 import { Header } from "../components/header";
@@ -11,6 +12,7 @@ import { CreateCommission } from "../pages/creator/create-commission";
 import { CreateStore } from "../pages/creator/create-store";
 import { MyStore } from "../pages/creator/my-store";
 import { MyStores } from "../pages/creator/my-stores";
+import { CommissionDetail } from "../pages/user/commission-detail";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
 import { UserRole } from "../__api__/types";
@@ -25,6 +27,10 @@ const clientRoutes = [
 const commonRoutes = [
   { path: "/confirm", element: <ConfirmEmail /> },
   { path: "/edit-profile", element: <EditProfile /> },
+  {
+    path: "/stores/:storeId/commissions/:commissionId",
+    element: <CommissionDetail />,
+  },
 ];
 
 const CreatorRoutes = [
@@ -51,11 +57,11 @@ export const LoggedInRouter = () => {
       <Header />
       <Routes>
         {data.me.role === UserRole.Client &&
-          clientRoutes.map((route) => <Route {...route} key={route.path} />)}
+          clientRoutes.map((route) => <Route {...route} key={nanoid()} />)}
         {data.me.role === UserRole.Creator &&
-          CreatorRoutes.map((route) => <Route {...route} key={route.path} />)}
+          CreatorRoutes.map((route) => <Route {...route} key={nanoid()} />)}
         {commonRoutes.map((route) => (
-          <Route {...route} key={route.path} />
+          <Route {...route} key={nanoid()} />
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
