@@ -9,6 +9,7 @@ import { Search } from "../pages/client/search";
 import { Store } from "../pages/client/store";
 import { Stores } from "../pages/client/stores";
 import { CreateCommission } from "../pages/creator/create-commission";
+import { CreatePost } from "../pages/creator/create-post";
 import { CreateStore } from "../pages/creator/create-store";
 import { MyStore } from "../pages/creator/my-store";
 import { MyStores } from "../pages/creator/my-stores";
@@ -38,6 +39,10 @@ const CreatorRoutes = [
   { path: "/create-store", element: <CreateStore /> },
   { path: "/stores/:id", element: <MyStore /> },
   { path: "/stores/:id/create-commission", element: <CreateCommission /> },
+  {
+    path: "/stores/:storeId/commissions/:commissionId/create-post",
+    element: <CreatePost />,
+  },
 ];
 
 export const LoggedInRouter = () => {

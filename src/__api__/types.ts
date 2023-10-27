@@ -57,6 +57,7 @@ export type Commission = {
   name: Scalars['String']['output'];
   options?: Maybe<Array<CommissionOption>>;
   photo?: Maybe<Scalars['String']['output']>;
+  post: Post;
   price: Scalars['Float']['output'];
   store: Store;
   updatedAt: Scalars['DateTime']['output'];
@@ -142,6 +143,18 @@ export type CreatePaymentOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type CreatePostInput = {
+  commissionId: Scalars['Float']['input'];
+  content: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+};
+
+export type CreatePostOutput = {
+  __typename?: 'CreatePostOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
 export type CreateStoreInput = {
   categoryName: Scalars['String']['input'];
   coverImg: Scalars['String']['input'];
@@ -162,6 +175,16 @@ export type DeleteCommissionInput = {
 
 export type DeleteCommissionOutput = {
   __typename?: 'DeleteCommissionOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
+export type DeletePostInput = {
+  postId: Scalars['Float']['input'];
+};
+
+export type DeletePostOutput = {
+  __typename?: 'DeletePostOutput';
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
 };
@@ -201,6 +224,18 @@ export type EditOrderOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type EditPostInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  postId: Scalars['Float']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EditPostOutput = {
+  __typename?: 'EditPostOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
 export type EditProfileInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
@@ -225,6 +260,18 @@ export type EditStoreOutput = {
   __typename?: 'EditStoreOutput';
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+};
+
+export type GetCommissionInput = {
+  id: Scalars['Float']['input'];
+};
+
+export type GetCommissionOutput = {
+  __typename?: 'GetCommissionOutput';
+  commission?: Maybe<Commission>;
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  post?: Maybe<Post>;
 };
 
 export type GetOrderInput = {
@@ -259,6 +306,17 @@ export type GetPaymentOutput = {
   payments?: Maybe<Array<Payment>>;
 };
 
+export type GetPostInput = {
+  id: Scalars['Float']['input'];
+};
+
+export type GetPostOutput = {
+  __typename?: 'GetPostOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  post?: Maybe<Post>;
+};
+
 export type LoginInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -277,11 +335,14 @@ export type Mutation = {
   createCommission: CreateCommissionOutput;
   createOrder: CreateOrderOutput;
   createPayment: CreatePaymentOutput;
+  createPost: CreatePostOutput;
   createStore: CreateStoreOutput;
   deleteCommission: DeleteCommissionOutput;
+  deletePost: DeletePostOutput;
   deleteStore: DeleteStoreOutput;
   editCommission: EditCommissionOutput;
   editOrder: EditOrderOutput;
+  editPost: EditPostOutput;
   editProfile: EditProfileOutput;
   editStore: EditStoreOutput;
   login: LoginOutput;
@@ -309,6 +370,11 @@ export type MutationCreatePaymentArgs = {
 };
 
 
+export type MutationCreatePostArgs = {
+  input: CreatePostInput;
+};
+
+
 export type MutationCreateStoreArgs = {
   input: CreateStoreInput;
 };
@@ -316,6 +382,11 @@ export type MutationCreateStoreArgs = {
 
 export type MutationDeleteCommissionArgs = {
   input: DeleteCommissionInput;
+};
+
+
+export type MutationDeletePostArgs = {
+  input: DeletePostInput;
 };
 
 
@@ -331,6 +402,11 @@ export type MutationEditCommissionArgs = {
 
 export type MutationEditOrderArgs = {
   input: EditOrderInput;
+};
+
+
+export type MutationEditPostArgs = {
+  input: EditPostInput;
 };
 
 
@@ -430,13 +506,25 @@ export type Payment = {
   user: User;
 };
 
+export type Post = {
+  __typename?: 'Post';
+  commission: Commission;
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   allCategories: AllCategoriesOutput;
   category: CategoryOutput;
+  getCommission: GetCommissionOutput;
   getOrder: GetOrderOutput;
   getOrders: GetOrdersOutput;
   getPayments: GetPaymentOutput;
+  getPost: GetPostOutput;
   me: User;
   myStore: MyStoreOutput;
   myStores: MyStoresOutput;
@@ -452,6 +540,11 @@ export type QueryCategoryArgs = {
 };
 
 
+export type QueryGetCommissionArgs = {
+  input: GetCommissionInput;
+};
+
+
 export type QueryGetOrderArgs = {
   input: GetOrderInput;
 };
@@ -459,6 +552,11 @@ export type QueryGetOrderArgs = {
 
 export type QueryGetOrdersArgs = {
   input: GetOrdersInput;
+};
+
+
+export type QueryGetPostArgs = {
+  input: GetPostInput;
 };
 
 
@@ -592,6 +690,13 @@ export type CategoriesComponentQueryVariables = Exact<{ [key: string]: never; }>
 
 export type CategoriesComponentQuery = { __typename?: 'Query', allCategories: { __typename?: 'AllCategoriesOutput', ok: boolean, error?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number }> | null } };
 
+export type CreatePostMutationVariables = Exact<{
+  input: CreatePostInput;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'CreatePostOutput', ok: boolean, error?: string | null } };
+
 export type CategoryPartsFragment = { __typename?: 'Category', id: number, name: string, coverImg: string, slug: string, storeCount: number };
 
 export type StorePartsFragment = { __typename?: 'Store', id: number, name: string, coverImg: string, description?: string | null, category: { __typename?: 'Category', name: string } };
@@ -672,6 +777,13 @@ export type LoginMutationVariables = Exact<{
 
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, token?: string | null, error?: string | null } };
+
+export type GetCommissionQueryVariables = Exact<{
+  input: GetCommissionInput;
+}>;
+
+
+export type GetCommissionQuery = { __typename?: 'Query', getCommission: { __typename?: 'GetCommissionOutput', ok: boolean, error?: string | null, commission?: { __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null } | null, post?: { __typename?: 'Post', id: number, title: string, content: string } | null } };
 
 export type VerifyEmailMutationVariables = Exact<{
   input: VerifyEmailInput;

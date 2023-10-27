@@ -206,14 +206,14 @@ export const CreateCommission = () => {
           {...register("description", {
             required: "Commission Description is required.",
             maxLength: {
-              value: 200,
-              message: "Description should be less than 200 chars.",
+              value: 30,
+              message: "Description should be less than 30 chars.",
             },
           })}
           className="input"
           type="text"
           name="description"
-          maxLength={200}
+          maxLength={30}
           placeholder="Commission Description"
         />
         {errors.description?.message && (

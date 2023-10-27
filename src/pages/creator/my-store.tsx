@@ -53,11 +53,6 @@ export const MyStore = () => {
     }
   );
 
-  // const chartRawData = data?.myStore.store?.orders.map((order) => ({
-  //   x: order.createdAt,
-  //   y: order.total,
-  // }));
-
   return (
     <div>
       <SetHelmet helmetTitle={`My Store - ${data?.myStore.store?.name}`} />
