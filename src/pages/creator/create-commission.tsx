@@ -109,6 +109,7 @@ export const CreateCommission = () => {
       const { name, photo, price, description, ...rest } = getValues();
 
       const actualCoverImg = photo?.[0];
+      console.log(actualCoverImg);
       let imgUrl;
       if (actualCoverImg) {
         const formBody = new FormData();
@@ -141,7 +142,7 @@ export const CreateCommission = () => {
             name,
             price: +price,
             description,
-            photo: imageUrl,
+            photo: imgUrl,
             storeId: +storeId,
             options:
               optionObjects as CreateCommissionMutationVariables["input"]["options"],
@@ -205,6 +206,10 @@ export const CreateCommission = () => {
         <input
           {...register("description", {
             required: "Commission Description is required.",
+            minLength: {
+              value: 5,
+              message: "Description should be greater than 5 chars.",
+            },
             maxLength: {
               value: 30,
               message: "Description should be less than 30 chars.",
@@ -213,6 +218,7 @@ export const CreateCommission = () => {
           className="input"
           type="text"
           name="description"
+          minLength={5}
           maxLength={30}
           placeholder="Commission Description"
         />

@@ -75,10 +75,13 @@ export const CommissionDetail = () => {
             {commissionData?.getCommission.commission?.description}
           </h5>
         </div>
+        <div>
+          <Link to={`/stores/${storeId}`}>Back to Store &rarr;</Link>
+        </div>
 
         {commissionData?.getCommission.post ? (
           <div className="grid gap-3 grid-col-1 lg:grid-cols-4 w-full mb-10 px-5 pt-10 pb-20 ">
-            <div className="lg:col-span-3 p-10 border-2">
+            <div className="lg:col-span-3 p-10 border-2 rounded-md">
               <div
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(
@@ -87,7 +90,24 @@ export const CommissionDetail = () => {
                 }}
               />
             </div>
-            <div className="lg:col-span-1 bg-slate-200 ">
+
+            <div className="lg:col-span-1 bg-slate-200 font-semibold rounded-md">
+              <div>
+                <div className="m-2 py-2 px-3 ring-2 mb-4 ring-purple-400 rounded-md bg-white">
+                  <div className="grid grid-cols-3 gap-2">
+                    <h6 className="col-span-2">
+                      {commissionData?.getCommission.commission?.name}
+                    </h6>
+                    <h6 className="text-sm opacity-75 col-span-1 text-end">{`+ ￦ ${
+                      commissionData?.getCommission.commission?.price || 0
+                    }`}</h6>
+                  </div>
+                </div>
+                <div className="px-2">
+                  <hr className="border-4 border-amber-300 my-2 rounded-lg" />
+                  <hr className="border-4 border-amber-300 my-2 rounded-lg" />
+                </div>
+              </div>
               {commissionData?.getCommission.commission?.options?.map(
                 (option) => (
                   <div key={nanoid()}>

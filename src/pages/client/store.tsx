@@ -48,7 +48,7 @@ export const Store = () => {
           </h5>
         </div>
       </div>
-      <div className="container grid mt-10 lg:grid-cols-3 gap-x-5 gap-y-7">
+      <div className="container grid my-10 lg:grid-cols-3 gap-x-5 gap-y-7">
         {data?.store.store?.commissions.map((commission) => (
           <div key={nanoid()}>
             <Commission

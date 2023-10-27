@@ -26,7 +26,7 @@ export const Commission: React.FC<ICommissionProps> = ({
   const { id: storeId } = useParams() as { id: string };
   return (
     <Link to={`/stores/${storeId}/commissions/${commissionId}`}>
-      <div className="px-8 py-4 pb-8 border hover:border-amber-500 transition-all grid gap-5 grid-cols-3">
+      <div className="px-8 py-4 pb-8 border hover:border-amber-500 transition-all grid gap-5 grid-cols-3 h-full">
         <div className="col-span-2">
           <div className="mb-5">
             <h3 className="text-lg font-bold">{name}</h3>
@@ -37,7 +37,7 @@ export const Commission: React.FC<ICommissionProps> = ({
             {price}
           </span>
           {isCustomer && options && options?.length !== 0 && (
-            <div>
+            <div className="mb-5">
               <h5 className="font-medium mt-5">Commission Options &darr;</h5>
               <hr className="border-amber-500 my-3" />
               {options?.map((option) => (
