@@ -134,11 +134,16 @@ export const CreateStore = () => {
         <input
           {...register("name", {
             required: "Name is required",
+            minLength: {
+              value: 5,
+              message: "Name should be longer than 5 chars.",
+            },
           })}
           className="input"
           name="name"
           required
           type="text"
+          min={5}
           placeholder="Store Name"
         />
         {errors.name?.message && (
