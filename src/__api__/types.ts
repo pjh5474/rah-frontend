@@ -49,6 +49,35 @@ export type CategoryOutput = {
   totalResults?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  client_Message_status: ChatStatus;
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  creator_Message_status: ChatStatus;
+  id: Scalars['Float']['output'];
+  sender: User;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type ChatRoom = {
+  __typename?: 'ChatRoom';
+  chats?: Maybe<Array<Chat>>;
+  client: User;
+  createdAt: Scalars['DateTime']['output'];
+  creator: User;
+  id: Scalars['Float']['output'];
+  unread_messages_user_1: Scalars['Float']['output'];
+  unread_messages_user_2: Scalars['Float']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export enum ChatStatus {
+  Read = 'Read',
+  Received = 'Received',
+  Sent = 'Sent'
+}
+
 export type Commission = {
   __typename?: 'Commission';
   createdAt: Scalars['DateTime']['output'];
@@ -96,6 +125,29 @@ export type CreateAccountInput = {
 
 export type CreateAccountOutput = {
   __typename?: 'CreateAccountOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
+export type CreateChatInput = {
+  chatRoomId: Scalars['Int']['input'];
+  content: Scalars['String']['input'];
+};
+
+export type CreateChatOutput = {
+  __typename?: 'CreateChatOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
+export type CreateChatRoomInput = {
+  clientId: Scalars['Int']['input'];
+  creatorId: Scalars['Int']['input'];
+};
+
+export type CreateChatRoomOutput = {
+  __typename?: 'CreateChatRoomOutput';
+  chatRoomId?: Maybe<Scalars['Int']['output']>;
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
 };
@@ -166,7 +218,7 @@ export type CreateStoreOutput = {
   __typename?: 'CreateStoreOutput';
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
-  storeId: Scalars['Int']['output'];
+  storeId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type DeleteCommissionInput = {
@@ -262,6 +314,24 @@ export type EditStoreOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type GetChatRoomInput = {
+  id: Scalars['Float']['input'];
+};
+
+export type GetChatRoomsOutput = {
+  __typename?: 'GetChatRoomsOutput';
+  chatRooms?: Maybe<Array<ChatRoom>>;
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
+export type GetChatroomOutput = {
+  __typename?: 'GetChatroomOutput';
+  chatRoom?: Maybe<ChatRoom>;
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
 export type GetCommissionInput = {
   id: Scalars['Float']['input'];
 };
@@ -332,6 +402,8 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: CreateAccountOutput;
+  createChat: CreateChatOutput;
+  createChatRoom: CreateChatRoomOutput;
   createCommission: CreateCommissionOutput;
   createOrder: CreateOrderOutput;
   createPayment: CreatePaymentOutput;
@@ -352,6 +424,16 @@ export type Mutation = {
 
 export type MutationCreateAccountArgs = {
   input: CreateAccountInput;
+};
+
+
+export type MutationCreateChatArgs = {
+  input: CreateChatInput;
+};
+
+
+export type MutationCreateChatRoomArgs = {
+  input: CreateChatRoomInput;
 };
 
 
@@ -520,6 +602,8 @@ export type Query = {
   __typename?: 'Query';
   allCategories: AllCategoriesOutput;
   category: CategoryOutput;
+  getChatRoom: GetChatroomOutput;
+  getChatRooms: GetChatRoomsOutput;
   getCommission: GetCommissionOutput;
   getOrder: GetOrderOutput;
   getOrders: GetOrdersOutput;
@@ -537,6 +621,11 @@ export type Query = {
 
 export type QueryCategoryArgs = {
   input: CategoryInput;
+};
+
+
+export type QueryGetChatRoomArgs = {
+  input: GetChatRoomInput;
 };
 
 
@@ -649,6 +738,8 @@ export type SubscriptionOrderUpdatesArgs = {
 
 export type User = {
   __typename?: 'User';
+  chatRooms?: Maybe<Array<ChatRoom>>;
+  chats?: Maybe<Array<Chat>>;
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
   id: Scalars['Float']['output'];
@@ -757,7 +848,7 @@ export type CreateStoreMutationVariables = Exact<{
 }>;
 
 
-export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null, storeId: number } };
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'CreateStoreOutput', ok: boolean, error?: string | null, storeId?: number | null } };
 
 export type MyStoreQueryVariables = Exact<{
   input: MyStoreInput;
