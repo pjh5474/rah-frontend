@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
 import { SetHelmet } from "../../components/helmet";
 import * as DOMPurify from "dompurify";
@@ -6,11 +6,12 @@ import { DEFAULT_IMAGE_URL } from "../../constants";
 import { COMMISSION_FRAGMENT } from "../../fragments";
 import { useMe } from "../../hooks/useMe";
 import {
+  DeleteCommissionMutation,
+  DeleteCommissionMutationVariables,
   GetCommissionQuery,
   GetCommissionQueryVariables,
   UserRole,
 } from "../../__api__/types";
-import { useState } from "react";
 import { OptionComponent } from "../../components/option";
 import { nanoid } from "nanoid";
 
@@ -32,6 +33,15 @@ export const GET_COMMISSION = gql`
   ${COMMISSION_FRAGMENT}
 `;
 
+export const DELETE_COMMISSION = gql`
+  mutation deleteCommission($input: DeleteCommissionInput!) {
+    deleteCommission(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 export const CommissionDetail = () => {
   const { storeId, commissionId } = useParams() as {
     storeId: string;
@@ -39,8 +49,6 @@ export const CommissionDetail = () => {
   };
   const { data } = useMe();
   const isCreator = data?.me.role === UserRole.Creator;
-
-  const [selectedOption, setSelectedOption] = useState<number[]>([]);
 
   const { data: commissionData, loading } = useQuery<
     GetCommissionQuery,
@@ -52,6 +60,33 @@ export const CommissionDetail = () => {
       },
     },
   });
+
+  const onDeleteComplete = () => {
+    if (deleteMutationData?.deleteCommission.ok) {
+      alert("Commission deleted!");
+      window.location.href = `/stores/${storeId}`;
+    }
+  };
+
+  const [deleteCommissionMutation, { data: deleteMutationData, error }] =
+    useMutation<DeleteCommissionMutation, DeleteCommissionMutationVariables>(
+      DELETE_COMMISSION,
+      {
+        onCompleted: onDeleteComplete,
+      }
+    );
+
+  const onDeleteClick = () => {
+    if (window.confirm("Are you sure you want to delete this commission?")) {
+      deleteCommissionMutation({
+        variables: {
+          input: {
+            commissionId: +commissionId,
+          },
+        },
+      });
+    }
+  };
 
   return (
     <div>
@@ -75,8 +110,9 @@ export const CommissionDetail = () => {
             {commissionData?.getCommission.commission?.description}
           </h5>
         </div>
-        <div>
+        <div className="flex justify-between">
           <Link to={`/stores/${storeId}`}>Back to Store &rarr;</Link>
+          <button onClick={onDeleteClick}>Delete Commission</button>
         </div>
 
         {commissionData?.getCommission.post ? (

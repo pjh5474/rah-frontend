@@ -86,7 +86,7 @@ export type Commission = {
   name: Scalars['String']['output'];
   options?: Maybe<Array<CommissionOption>>;
   photo?: Maybe<Scalars['String']['output']>;
-  post: Post;
+  post?: Maybe<Post>;
   price: Scalars['Float']['output'];
   store: Store;
   updatedAt: Scalars['DateTime']['output'];
@@ -875,6 +875,13 @@ export type GetCommissionQueryVariables = Exact<{
 
 
 export type GetCommissionQuery = { __typename?: 'Query', getCommission: { __typename?: 'GetCommissionOutput', ok: boolean, error?: string | null, commission?: { __typename?: 'Commission', id: number, name: string, price: number, photo?: string | null, description?: string | null, options?: Array<{ __typename?: 'CommissionOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'CommissionChoice', name: string, extra?: number | null }> | null }> | null } | null, post?: { __typename?: 'Post', id: number, title: string, content: string } | null } };
+
+export type DeleteCommissionMutationVariables = Exact<{
+  input: DeleteCommissionInput;
+}>;
+
+
+export type DeleteCommissionMutation = { __typename?: 'Mutation', deleteCommission: { __typename?: 'DeleteCommissionOutput', ok: boolean, error?: string | null } };
 
 export type VerifyEmailMutationVariables = Exact<{
   input: VerifyEmailInput;

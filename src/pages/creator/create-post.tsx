@@ -15,7 +15,7 @@ export const CreatePost = () => {
     commissionId: string;
   };
 
-  const { data: commissionData, refetch } = useQuery<
+  const { data: commissionData } = useQuery<
     GetCommissionQuery,
     GetCommissionQueryVariables
   >(GET_COMMISSION, {
@@ -46,11 +46,7 @@ export const CreatePost = () => {
             {commissionData?.getCommission.commission?.description}
           </h5>
         </div>
-        <QuillComponent
-          refetch={refetch}
-          storeId={+storeId}
-          commissionId={+commissionId}
-        />
+        <QuillComponent storeId={+storeId} commissionId={+commissionId} />
       </div>
     </div>
   );

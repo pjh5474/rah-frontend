@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ImageResize } from "quill-image-resize-module-ts";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import {
   CreatePostMutation,
   CreatePostMutationVariables,
@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FormError } from "./form-error";
 import { IMAGE_FILE_SIZE } from "../constants";
+import { GET_COMMISSION } from "../pages/user/commission-detail";
 
 if (!Quill.import("modules/imageResize")) {
   Quill.register("modules/imageResize", ImageResize);
@@ -28,23 +29,56 @@ const CREATE_POST = gql`
 interface IQuillComponentProps {
   storeId: number;
   commissionId: number;
-  refetch: () => void;
 }
 
 export const QuillComponent: React.FC<IQuillComponentProps> = ({
   commissionId,
   storeId,
-  refetch,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState("");
   const quillRef = useRef<ReactQuill>(null);
   const navigate = useNavigate();
 
-  const [createPostMutation, { loading, data, error }] = useMutation<
+  const client = useApolloClient();
+
+  const onCreateCompleted = () => {
+    if (data?.createPost.ok) {
+      alert("게시글이 작성되었습니다.");
+    }
+    const queryResult = client.readQuery({
+      query: GET_COMMISSION,
+      variables: {
+        input: {
+          id: +commissionId,
+        },
+      },
+    });
+    client.writeQuery({
+      query: GET_COMMISSION,
+      variables: {
+        input: {
+          id: +commissionId,
+        },
+      },
+      data: {
+        getCommission: {
+          ...queryResult.getCommission,
+          post: {
+            content: value,
+            __typename: "Post",
+          },
+        },
+      },
+    });
+  };
+
+  const [createPostMutation, { data, loading, error }] = useMutation<
     CreatePostMutation,
     CreatePostMutationVariables
-  >(CREATE_POST);
+  >(CREATE_POST, {
+    onCompleted: onCreateCompleted,
+  });
 
   const onClick = async (
     quillref: React.MutableRefObject<ReactQuill | null>
@@ -90,15 +124,8 @@ export const QuillComponent: React.FC<IQuillComponentProps> = ({
       return new Blob([ab], { type: mimeString });
     });
 
-    console.log("images:", images);
-
-    if (imageBuffer.length > 0) {
-      console.log(imageBuffer);
-    }
-
     try {
       if (imageBuffer.length > 0) {
-        console.log("imageBuffer:", imageBuffer);
         const formBody = new FormData();
         imageBuffer.forEach((image) => {
           formBody.append("images", image);
